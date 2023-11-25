@@ -19,8 +19,46 @@ import 'package:graphql/src/scheduler/scheduler.dart';
 
 import 'package:graphql/src/core/_query_write_handling.dart';
 
-bool Function(dynamic a, dynamic b) _deepEquals =
-    const DeepCollectionEquality().equals;
+// bool Function(dynamic a, dynamic b) _deepEquals =
+//     const DeepCollectionEquality().equals;
+
+bool jsonMapEquals(dynamic a, dynamic b) {
+  if (identical(a, b)) {
+    return true;
+  }
+  if (a is Map && b is Map) {
+    if (a.length != b.length) return false;
+    for (var key in a.keys) {
+      if (!b.containsKey(key)) return false;
+      if (!jsonMapEquals(a[key], b[key])) return false;
+    }
+    return true;
+  }
+  if (a is List && b is List) {
+    final length = a.length;
+    if (length != b.length) return false;
+    for (var i = 0; i < length; i++) {
+      if (!jsonMapEquals(a[i], b[i])) return false;
+    }
+    return true;
+  }
+  assert(a is num || a is String || a is bool || a == null);
+  assert(b is num || b is String || b is bool || b == null);
+  return a == b;
+}
+
+bool instrumented(Function(dynamic, dynamic) fn, dynamic a, dynamic b) {
+  final stopwatch = Stopwatch();
+  stopwatch.start();
+  var r = fn(a, b);
+  stopwatch.stop();
+  print('deepEquals (ms): ${stopwatch.elapsedMilliseconds}');
+  return r;
+}
+
+bool _deepEquals(dynamic a, dynamic b) {
+  return instrumented(jsonMapEquals, a, b);
+}
 
 class QueryManager {
   QueryManager({

@@ -24,13 +24,15 @@ import 'package:graphql/src/core/_query_write_handling.dart';
 
 bool jsonMapEquals(dynamic a, dynamic b) {
   if (identical(a, b)) {
-    print('Identical');
     return true;
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) return false;
     for (var key in a.keys) {
-      if (!b.containsKey(key)) return false;
+      if (!b.containsKey(key)) {
+        print('b does not contain the key $key');
+        return false;
+      }
       if (!jsonMapEquals(a[key], b[key])) return false;
     }
     return true;
@@ -43,10 +45,6 @@ bool jsonMapEquals(dynamic a, dynamic b) {
     }
     return true;
   }
-  print('typeOf a = ${a.runtimeType}');
-  print('typeOf b = ${b.runtimeType}');
-  assert(a is num || a is String || a is bool || a == null);
-  assert(b is num || b is String || b is bool || b == null);
   return a == b;
 }
 

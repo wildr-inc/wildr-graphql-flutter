@@ -11,7 +11,7 @@ dependencies:
   graphql:
     git:
       url: https://github.com/daksh-gargas/wildr-graphql-flutter.git
-      ref: main
+      ref: development
       path: packages/graphql
   gql_exec: ^1.0.0
   flutter:

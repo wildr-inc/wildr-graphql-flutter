@@ -48,10 +48,14 @@ bool jsonMapEquals(dynamic a, dynamic b) {
   return a == b;
 }
 
-bool instrumented(Function(dynamic, dynamic) fn, dynamic a, dynamic b) {
+bool instrumented(
+  bool Function(dynamic, dynamic) jsonMapEquals,
+  dynamic a,
+  dynamic b,
+) {
   final stopwatch = Stopwatch();
   stopwatch.start();
-  var r = fn(a, b);
+  bool r = jsonMapEquals(a, b);
   stopwatch.stop();
   print('deepEquals (ms): ${stopwatch.elapsedMilliseconds}');
   return r;

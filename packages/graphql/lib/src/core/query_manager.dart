@@ -53,11 +53,7 @@ bool instrumented(
   dynamic a,
   dynamic b,
 ) {
-  final stopwatch = Stopwatch();
-  stopwatch.start();
-  bool r = jsonMapEquals(a, b);
-  stopwatch.stop();
-  print('deepEquals (ms): ${stopwatch.elapsedMilliseconds}');
+  jsonMapEquals(a, b);
   return r;
 }
 

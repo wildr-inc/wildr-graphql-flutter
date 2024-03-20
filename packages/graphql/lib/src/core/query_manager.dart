@@ -58,7 +58,7 @@ bool instrumented(Function(dynamic, dynamic) fn, dynamic a, dynamic b) {
 }
 
 bool _deepEquals(dynamic a, dynamic b) {
-  return instrumented(jsonMapEquals, a, b);
+  return jsonMapEquals(a, b);
 }
 
 class QueryManager {
